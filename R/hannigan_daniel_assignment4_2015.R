@@ -1,21 +1,20 @@
-### Assignment #2: Programming in R ###
+###' @title Assignment #4: Testing in R ###
+##' @author Daniel Hannigan
+#' @note ESM 296 - Informatics
 
-## Import data set into R for analysis. ##
-
-# Reads the data input file and creates an R object named "data.input". Replace absolute path of data input file based on its location in the directory (e.g. "clim.short.txt"). 
-
-data.input = read.table(file = "/Users/Dan/Google Drive/Bren School/Spring 2015/ESM 296 - Informatics/clim.short.txt", head = T)
+#' @import clim.data
 
 ## Execute waterstats on data set. ##
 
-# "waterstats" is a function that returns these key statistics from the data input file: the average Spring temperature in degrees C, the year with the lowest recorded temperature, the average Spring rainfall in mm, and the year with the highest recorded rainfall.
+#' @return "waterstats" is a function that returns these key statistics from the data input file: the average Spring temperature in degrees C, the year with the lowest recorded temperature, the average Spring rainfall in mm, and the year with the highest recorded rainfall.
 
-# The function requires daily data of minimum temperature, maximum temperature, and rainfall, with headers named "tmin", "tmax", and "rain" respectively. Additionally, fields corresponding to the month and year of year record should be named "month", and "year" respectively.
+#' @param The function requires daily data of minimum temperature (in degrees C), maximum temperature (in degrees C), and rainfall (in mm), with headers named "tmin", "tmax", and "rain" respectively. Additionally, fields corresponding to the month and year of year record should be named "month", and "year" respectively.
 
-# The function's parameter allows the user to select a specific peroid based on the month's number (e.g. spring months = 3, 4, and 5).
+#' @param The function's parameter allows the user to select a specific peroid based on the calendar number which corresponds to each month (default = 3, 4, and 5).
 
-waterstats = function(data.input, start = 3, end = 5) {
-  spring = subset(data.input, month >= start & month <= end, select = c(tmin, tmax, rain, year)) #Creates a subset of the input data only containing Spring months according to the function parameters.
+waterstats = function(clim.data, start = 3, end = 5) {
+  
+  spring = subset(clim.data, month >= start & month <= end, select = c(tmin, tmax, rain, year)) #Creates a subset of the input data only containing Spring months according to the function parameters.
   attach(spring) #Attaches the subset data. 
   aggspring = aggregate(cbind(tmin,tmax,rain) ~ year, FUN = mean) #Calculates the aggregate mean of tmin, tmax, and rain for each year.
   detach(spring) #Detaches the subset data.
