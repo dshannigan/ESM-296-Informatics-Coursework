@@ -2,7 +2,7 @@
 ##' @author Daniel Hannigan
 #' @note ESM 296 - Informatics
 
-#' @import clim.data
+#' @import clim
 
 ## Execute waterstats on data set. ##
 
@@ -12,21 +12,21 @@
 
 #' @param The function's parameter allows the user to select a specific peroid based on the calendar number which corresponds to each month (default = 3, 4, and 5).
 
-waterstats = function(clim.data, springmonths = c(4:6)) {
+waterstats = function(clim, springmonths = c(4:6)) {
   
   #Data format check
   
-  columns = c ("tmax","tmin","year","month","rain")
-  check = sapply(columns, match, colnames(clim.data), nomatch = 0)
+  columns = c ("tmax","tmin","year","month","rain")#List of column names to check against.
+  check = sapply(columns, match, colnames(clim), nomatch = 0)#Check column names.
   if (min(check) == 0){
-    return ("Error: Invalid column name")}
-  if (min(clim.data$rain) < 0){
-    return ("Error: Invalid data")}
+    return ("Error: Invalid column name")}#Displayed if a column name does not match.
+  if (min(clim$rain) < 0){
+    return ("Error: Invalid data")}#Displayed if data is incorrect or invalid.
   
   #Create average temperature column, and subset spring months
   
-  clim.data$tavg = (clim.data$tmin + clim.data$tmax)/2.0
-  spring = subset(clim.data, clim.data$month %in% springmonths) 
+  clim$tavg = (clim$tmin + clim$tmax)/2.0
+  spring = subset(clim, clim$month %in% springmonths) 
  
   #Calculating values
  
@@ -39,10 +39,8 @@ waterstats = function(clim.data, springmonths = c(4:6)) {
 
   wettest.year = aggrain$year[which.max(aggrain$rain)] #Finds the maximum total spring rainfall
   spring.rain.mean = mean(aggrain$rain)
-  spring.rain.mean = round(spring.rain.mean, 2)
- 
-  results = cbind(meantemp, minyear, meanrain, rainyyear) #Creates a data frame to display results.
-  colnames (results) = c("Average Spring temperature (C)" , "Year with lowest average spring temperature" , "Average Spring rainfall (mm)" , "Year with highest total spring rainfall")
-  write.table(results, file = "Programming output")
-  print(results, row.names = FALSE)
-  }
+  spring.rain.mean = round(spring.rain.mean, 0)
+  
+  return(list("Mean Spring Temperature (in degrees C)" = spring.t.mean, "Year With Coldest Spring" = coldest.year,  "Mean Spring Rainfall (in mm)" = spring.rain.mean, "Year With Wettest Spring" = wettest.year))
+
+}
