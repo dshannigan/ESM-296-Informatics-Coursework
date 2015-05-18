@@ -12,7 +12,15 @@
 
 #' @param The function's parameter allows the user to select a specific peroid based on the calendar number which corresponds to each month (default = 3, 4, and 5).
 
-waterstats = function(clim.data, start = 3, end = 5) {
+waterstats = function(clim.data, springmonths = c(4:6)) {
+  
+  #Data format check
+  columns = c ("tmax","tmin","year","month","rain")
+  check = sapply(requiredcols, match, colnames(clim.data), nomatch = 0)
+  if (min(check) == 0){
+    return ("Error: Invalid column name")}
+  if (min(clim.data$rain) < 0){
+    return ("Error: Invalid data")}
   
   spring = subset(clim.data, month >= start & month <= end, select = c(tmin, tmax, rain, year)) #Creates a subset of the input data only containing Spring months according to the function parameters.
   attach(spring) #Attaches the subset data. 
