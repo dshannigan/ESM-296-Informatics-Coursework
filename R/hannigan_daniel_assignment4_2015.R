@@ -15,6 +15,7 @@
 waterstats = function(clim.data, springmonths = c(4:6)) {
   
   #Data format check
+  
   columns = c ("tmax","tmin","year","month","rain")
   check = sapply(requiredcols, match, colnames(clim.data), nomatch = 0)
   if (min(check) == 0){
@@ -22,15 +23,17 @@ waterstats = function(clim.data, springmonths = c(4:6)) {
   if (min(clim.data$rain) < 0){
     return ("Error: Invalid data")}
   
-  spring = subset(clim.data, month >= start & month <= end, select = c(tmin, tmax, rain, year)) #Creates a subset of the input data only containing Spring months according to the function parameters.
-  attach(spring) #Attaches the subset data. 
-  aggspring = aggregate(cbind(tmin,tmax,rain) ~ year, FUN = mean) #Calculates the aggregate mean of tmin, tmax, and rain for each year.
-  detach(spring) #Detaches the subset data.
-  attach(aggspring) #Attaches the aggregated data. 
-  meantemp = mean((tmax + tmin) / 2) #The average Spring temperature for all years.
-  meantemp = round(meantemp, 2) #Round to 2 decimal places.
-  mintemp = min(tmin) #The the lowest minimum average temperature corresponding to one year.
-  minyear = subset(aggspring, tmin == mintemp, select = year) #Finds the year associated with the previously calculated minimum.
+  #Create average temperature column, and subset spring months
+  
+  clim.data$tavg = (clim.data$tmin + clim.data$tmax)/2.0
+  spring = subset(clim.data, clim.data$month %in% springmonths) 
+ 
+  #Calculating values
+ 
+  temp.mean = mean(spring$tavg)
+  temp.mean = round(temp.mean, 2)
+  year.low = spring$year[which.min(spring$tavg)]
+  
   meanrain = mean(aggspring$rain) #The average spring rain for all years.
   meanrain = round(meanrain, 2) #Round to 2 decimal places.
   detach(aggspring) #Detach
