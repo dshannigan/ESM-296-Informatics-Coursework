@@ -17,7 +17,7 @@ waterstats = function(clim.data, springmonths = c(4:6)) {
   #Data format check
   
   columns = c ("tmax","tmin","year","month","rain")
-  check = sapply(requiredcols, match, colnames(clim.data), nomatch = 0)
+  check = sapply(columns, match, colnames(clim.data), nomatch = 0)
   if (min(check) == 0){
     return ("Error: Invalid column name")}
   if (min(clim.data$rain) < 0){
@@ -30,20 +30,16 @@ waterstats = function(clim.data, springmonths = c(4:6)) {
  
   #Calculating values
  
-  temp.mean = mean(spring$tavg)
-  temp.mean = round(temp.mean, 2)
-  year.low = spring$year[which.min(spring$tavg)]
-  
-  meanrain = mean(aggspring$rain) #The average spring rain for all years.
-  meanrain = round(meanrain, 2) #Round to 2 decimal places.
-  detach(aggspring) #Detach
-  attach(spring) #Attach
-  aggrain = aggregate(rain ~ year, FUN = sum) #Calculates the aggregate sum of rainfall for each year of the data set.
-  detach(spring) #Detach
-  attach(aggrain) #Attach
-  maxrain = max(rain) #Finds the maximum total spring rainfall.
-  rainyyear = subset(aggrain, rain == maxrain, select = year) #Finds the year associated with the previously calculated maximum. 
-  detach(aggrain) #Detach
+  spring.t.mean = mean(spring$tavg)
+  spring.t.mean = round(spring.t.mean, 2)
+  coldest.year = spring$year[which.min(spring$tavg)]
+
+  aggrain = aggregate(spring$rain ~ spring$year, FUN = sum)
+  colnames(aggrain) = c("year", "rain")#Calculates the aggregate sum of rainfall for each year of the data set.
+
+  wettest.year = aggrain$year[which.max(aggrain$rain)] #Finds the maximum total spring rainfall
+  spring.rain.mean = mean(aggrain$rain)
+  spring.rain.mean = round(spring.rain.mean, 2)
  
   results = cbind(meantemp, minyear, meanrain, rainyyear) #Creates a data frame to display results.
   colnames (results) = c("Average Spring temperature (C)" , "Year with lowest average spring temperature" , "Average Spring rainfall (mm)" , "Year with highest total spring rainfall")
