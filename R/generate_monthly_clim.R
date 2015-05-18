@@ -3,7 +3,7 @@
 #' @param clim
 #'  file must have tmax, tmin, rain (precip in mm), year, month (integer), day
 #' @param timestep; must be "m" or "y" or "d"; default is "m"
-#' @return dataframe with monthly results
+#' @return dataframe with results
 
 generate_clim = function(clim, timestep = "m") {
   dataset = read.table("clim", header = T)
