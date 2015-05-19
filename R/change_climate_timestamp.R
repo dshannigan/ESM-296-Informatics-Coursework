@@ -13,12 +13,12 @@ generate_clim = function(clim, timestep = "m") {
     tmp = aggregate(dataset[,c("rain","month")], by = list(dataset$month),sum)
     newdata = tmp$rain }
   
-  if (timestep=="y") {
+  if (timestep == "y") {
     newdata = aggregate(dataset[,c("tmax","tmin","year")], by = list(dataset$year), mean)
     tmp = aggregate(dataset[,c("rain","year")], by = list(dataset$year),sum)
     newdata = tmp$rain }
     
-  if (timestep=="d") {
+  if (timestep == "d") {
     newdata = aggregate(dataset[,c("tmax","tmin","day")], by = list(dataset$day), mean)
     tmp = aggregate(dataset[,c("rain","day")], by = list(dataset$day),sum)
     newdata = tmp$rain }
