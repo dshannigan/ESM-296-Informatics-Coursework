@@ -6,22 +6,27 @@
 #' @return dataframe with results
 
 generate_clim = function(clim, timestep = "m") {
-  dataset = read.table("clim", header = T)
+  dataset = read.table("clim.txt", header = T)
   
   if (timestep == "m") {
-    newdata = aggregate(dataset[,c("tmax","tmin","month")], by = list(dataset$month), mean)
-    tmp = aggregate(dataset[,c("rain","month")], by = list(dataset$month),sum)
-    newdata = tmp$rain }
+    newdata = aggregate(dataset[,c("tmin","tmax")], by = list(dataset$month, dataset$year), mean)
+    tmp = aggregate(dataset$rain, by = list(dataset$month, dataset$year), sum)
+    newdata$rain = tmp$x
+    colnames(newdata) = c("month","year","tmin","tmax","rain")
+  }
   
   if (timestep == "y") {
-    newdata = aggregate(dataset[,c("tmax","tmin","year")], by = list(dataset$year), mean)
-    tmp = aggregate(dataset[,c("rain","year")], by = list(dataset$year),sum)
-    newdata = tmp$rain }
+    newdata = aggregate(dataset[,c("tmin","tmax")], by = list(dataset$year), mean)
+    tmp = aggregate(dataset$rain, by = list(dataset$year), sum)
+    newdata$rain = tmp$x
+    colnames(newdata) = c("year","tmin","tmax","rain")
+  }
     
-  if (timestep == "d") {
-    newdata = aggregate(dataset[,c("tmax","tmin","day")], by = list(dataset$day), mean)
-    tmp = aggregate(dataset[,c("rain","day")], by = list(dataset$day),sum)
-    newdata = tmp$rain }
+#   if (timestep == "d") {
+#     newdata = aggregate(dataset[,c("tmax","tmin")], by = list(dataset$day, dataset$month, dataset$year), mean)
+#     tmp = aggregate(dataset$rain, by = list(dataset$day, dataset$month, dataset$year), sum)
+#     newdata$rain = tmp$x
+#   }
   
   return(newdata)
 }
