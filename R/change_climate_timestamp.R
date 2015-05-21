@@ -1,10 +1,11 @@
-#' Read a climate input file and convert to monthly or year time step
-#' 
-#' @param clim
-#'  file must have tmax, tmin, rain (precip in mm), year, month (integer), day.
-#' @param timestep. Must be "m" or "y" or "d"; default is "m".
-#' @param springmonths. Integer month dates considered as spring months. 
-#' @return dataframe with results.
+###' @title Function for displaying climate data files according to user-specified timesteps.
+###' @author Daniel Hannigan
+###' @note ESM 296 - Informatics
+###' 
+###' @param filename. File must have tmax, tmin, rain (precip in mm), year, month (integer), day. Default filename is "clim".
+###' @param timestep. Must be "m" or "y" or "d"; default is "m".
+###' @param springmonths. List of select spring months. 
+###' @write Two new data files: (1) The coldest spring with average tempertures by day/month/year, (2) The wettest spring with total daily rainfall by day/month/year.
 
 generate_clim = function(filename = clim, timestep = "m", springmonths = c(4:6)){
   
