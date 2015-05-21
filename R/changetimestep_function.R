@@ -1,13 +1,16 @@
-###' @title Function for displaying climate data files according to user-specified timesteps.
-###' @author Daniel Hannigan
-###' @note ESM 296 - Informatics
-###' 
-###' @param filename. File must have tmax, tmin, rain (precip in mm), year, month (integer), day. Default filename is "clim".
-###' @param timestep. Must be "m" or "y" or "d"; default is "m".
-###' @param springmonths. List of select spring months. 
-###' @write Two new data files: (1) The coldest spring with average tempertures by day/month/year, (2) The wettest spring with total daily rainfall by day/month/year.
+###' @title   Function for displaying climate data files according to user-specified timesteps
+###' @author  Daniel Hannigan
+###' @note    ESM 296 - Informatics
+#' 
+#' @param filename. File must have tmax, tmin, rain (precip in mm), year, month (integer), day. Default filename is "clim".
+#'
+#' @param timestep. Must be "m" or "y" or "d"; default is "m".
+#'
+#' @param springmonths. List of select spring months. 
+#'
+#' @write Two new data files: (1) The coldest spring with average tempertures by day/month/year, (2) The wettest spring with total daily rainfall by day/month/year.
 
-generate_clim = function(filename = clim, timestep = "m", springmonths = c(4:6)){
+changetimestep = function(filename = clim, timestep = "m", springmonths = c(4:6)){
   
   clim$tavg = (clim$tmin + clim$tmax)/2.0
   spring = subset(clim, clim$month %in% springmonths)

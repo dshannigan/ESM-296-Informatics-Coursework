@@ -1,4 +1,7 @@
-# Testing that the function "spring.summary" works
+###' @title   Test to see that the function "springstats" works
+###' @author  Daniel Hannigan
+###' @note    ESM 296 - Informatics
+ 
 test_that("spring.summary.works",
 
 # Creates "fake" data frame with easy-to-use values. Column names must be the same as what is written in the function (i.e. the headers of the input file). 

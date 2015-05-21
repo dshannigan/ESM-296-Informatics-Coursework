@@ -1,14 +1,14 @@
-###' @title R Programming and Testing (with GitHub)
-###' @author Daniel Hannigan
-###' @note ESM 296 - Informatics
-
-###' @data clim. Use the function "read_climate_data.R" to add data in RStudio.
-
-###' @return "springstats" is a function that returns these key statistics from the data input file: the average Spring temperature in degrees C, the year with the lowest recorded temperature, the average Spring rainfall in mm, and the year with the highest recorded rainfall.
-
-###' @param The function requires daily data of minimum temperature (in degrees C), maximum temperature (in degrees C), and rainfall (in mm), with headers named "tmin", "tmax", and "rain" respectively. Additionally, fields corresponding to the month and year of year record should be named "month", and "year" respectively.
-
-###' @param The function's parameter allows the user to select a specific peroid based on the calendar number which corresponds to each month (default = 3, 4, and 5).
+###' @title   Programming and testing functions with RStudio (and GitHub)
+###' @author  Daniel Hannigan
+###' @note    ESM 296 - Informatics
+#'
+#' @data clim. Use the function "read_climate_data.R" to add data in RStudio.
+#'
+#' @param The function requires daily data of minimum temperature (in degrees C), maximum temperature (in degrees C), and rainfall (in mm), with headers named "tmin", "tmax", and "rain" respectively. Additionally, fields corresponding to the month and year of year record should be named "month", and "year" respectively.
+#'
+#' @param The function's parameter allows the user to select a specific peroid based on the calendar number which corresponds to each month (default = 3, 4, and 5).
+#' 
+#' @return "springstats" is a function that returns these key statistics from the data input file: the average Spring temperature in degrees C, the year with the lowest recorded temperature, the average Spring rainfall in mm, and the year with the highest recorded rainfall.
 
 springstats = function(filename = clim, springmonths = c(4:6)) {
   
