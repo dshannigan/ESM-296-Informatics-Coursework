@@ -5,8 +5,13 @@
 #' @param timestep; must be "m" or "y" or "d"; default is "m"
 #' @return dataframe with results
 
-generate_clim = function(clim, timestep = "m") {
-  dataset = read.table("clim.txt", header = T)
+generate_clim = function(clim, timestep = "m", springmonths = c(4:6)){
+  
+  if (timestep == "d") {
+    newdata = aggregate(dataset[,c("tmax","tmin")], by = list(dataset$day, dataset$month, dataset$year), mean)
+    tmp = aggregate(dataset$rain, by = list(dataset$day, dataset$month, dataset$year), sum)
+    newdata$rain = tmp$x
+  }
   
   if (timestep == "m") {
     newdata = aggregate(dataset[,c("tmin","tmax")], by = list(dataset$month, dataset$year), mean)
@@ -21,12 +26,6 @@ generate_clim = function(clim, timestep = "m") {
     newdata$rain = tmp$x
     colnames(newdata) = c("year","tmin","tmax","rain")
   }
-    
-#   if (timestep == "d") {
-#     newdata = aggregate(dataset[,c("tmax","tmin")], by = list(dataset$day, dataset$month, dataset$year), mean)
-#     tmp = aggregate(dataset$rain, by = list(dataset$day, dataset$month, dataset$year), sum)
-#     newdata$rain = tmp$x
-#   }
   
   return(newdata)
 }
