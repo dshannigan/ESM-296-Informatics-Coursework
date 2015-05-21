@@ -12,7 +12,7 @@
 
 #' @param The function's parameter allows the user to select a specific peroid based on the calendar number which corresponds to each month (default = 3, 4, and 5).
 
-springstats = function(clim, springmonths = c(4:6)) {
+springstats = function(filename = clim, springmonths = c(4:6)) {
   
   #Data format check
   
@@ -25,14 +25,15 @@ springstats = function(clim, springmonths = c(4:6)) {
   
   #Create average temperature column, and subset spring months
   
-  clim$tavg = (clim$tmin + clim$tmax)/2.0
+  clim$tavg = (clim$tmin + clim$tmax)/2
   spring = subset(clim, clim$month %in% springmonths) 
  
   #Calculating values
  
   spring.t.mean = mean(spring$tavg)
   spring.t.mean = round(spring.t.mean, 2)
-  coldest.year = spring$year[which.min(spring$tavg)]
+  yeartemp = aggregate(spring$tavg, by = list(spring$year), mean)
+  coldest.year = yeartemp$Group.1[which.min(yeartemp$x)]
 
   aggrain = aggregate(spring$rain ~ spring$year, FUN = sum)
   colnames(aggrain) = c("year", "rain")#Calculates the aggregate sum of rainfall for each year of the data set.
